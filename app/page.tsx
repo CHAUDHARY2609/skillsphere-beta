@@ -8,16 +8,12 @@ import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 // 1. DATA INFRASTRUCTURE (40+ COMPLETE PROFILES)
 // ==========================================
 const SEED_USERS = [
-  { id: 'u1', name: 'Aniket Chaudhary', email: 'aniket@niet.co.in', erpId: '0221BCA089', branch: 'BCA', year: 3, bio: 'Building vibe-coded multi-agent AI systems, IoT mesh architectures, and backend automation engines.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aniket', collabs: 94, reputation: 1250, skills: [{ name: 'Python', level: 'Advanced' }, { name: 'Development', level: 'Advanced' }, { name: 'React', level: 'Advanced' }] },
-  { id: 'u2', name: 'Riya Sharma', email: 'riya.s@niet.co.in', erpId: '0221CSE045', branch: 'CSE', year: 4, bio: 'UI/UX enthusiast and Frontend Engineer. Fine-tuning system design tokens and custom design specs.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Riya', collabs: 88, reputation: 980, skills: [{ name: 'Development', level: 'Advanced' }, { name: 'Painting', level: 'Advanced' }, { name: 'Figma', level: 'Advanced' }] },
-  { id: 'u3', name: 'Aman Verma', email: 'aman.v@niet.co.in', erpId: '0221AI012', branch: 'CSE (AI/ML)', year: 2, bio: 'Data cruncher training custom layers by day, configuring network firewalls by night.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aman', collabs: 72, reputation: 640, skills: [{ name: 'Python', level: 'Advanced' }, { name: 'C++', level: 'Intermediate' }] },
-  { id: 'u4', name: 'Sneha Reddy', email: 'sneha.r@niet.co.in', erpId: '0221CS098', branch: 'CSE', year: 3, bio: 'Full-stack software developer who loves creative arts, stage acting, and building server edge functions.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha', collabs: 69, reputation: 810, skills: [{ name: 'Development', level: 'Advanced' }, { name: 'Acting', level: 'Advanced' }, { name: 'Java', level: 'Intermediate' }] },
-  { id: 'u5', name: 'Vikram Malhotra', email: 'vikram.m@niet.co.in', erpId: '0221CY022', branch: 'Cybersecurity', year: 4, bio: 'Penetration tester focused on core runtime systems. Managing local tech startup initiatives.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Vikram', collabs: 66, reputation: 1120, skills: [{ name: 'Entrepreneurship', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }] },
-  { id: 'u6', name: 'Divya Teja', email: 'divya.t@niet.co.in', erpId: '0221EC078', branch: 'Electronics', year: 3, bio: 'Embedded system firmware designer. Classical dancer and video choreographer outside labs.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Divya', collabs: 51, reputation: 590, skills: [{ name: 'Dancing', level: 'Advanced' }, { name: 'C++', level: 'Advanced' }] },
-  { id: 'u7', name: 'Aditya Joshi', email: 'aditya.j@niet.co.in', erpId: '0221DS034', branch: 'Data Science', year: 2, bio: 'Analyzing statistical arrays. Hobbyist canvas painter working with oil medium textures.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aditya', collabs: 48, reputation: 480, skills: [{ name: 'Painting', level: 'Advanced' }, { name: 'Python', level: 'Intermediate' }] },
-  { id: 'u8', name: 'Ishita Kapoor', email: 'ishita.k@niet.co.in', erpId: '0221CSE091', branch: 'CSE', year: 3, bio: 'Western dance coordinator and interface developer creating modular style primitives.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ishita', collabs: 45, reputation: 920, skills: [{ name: 'Dancing', level: 'Advanced' }, { name: 'Development', level: 'Intermediate' }] },
-  { id: 'u9', name: 'Arjun Mehta', email: 'arjun.m@niet.co.in', erpId: '0221BCA054', branch: 'BCA', year: 4, bio: 'SaaS framework developer specialized in high-performance Java enterprise applications.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', collabs: 42, reputation: 1180, skills: [{ name: 'Java', level: 'Advanced' }, { name: 'Development', level: 'Advanced' }, { name: 'Entrepreneurship', level: 'Advanced' }] },
-  { id: 'u10', name: 'Kriti Singhal', email: 'kriti.s@niet.co.in', erpId: '0221DS011', branch: 'Data Science', year: 4, bio: 'Theater artist, public orator, and analytical database layout developer.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kriti', collabs: 39, reputation: 1040, skills: [{ name: 'Acting', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }] }
+  { id: 'u1', name: 'Aniket Chaudhary', email: 'aniket.22bca100@niet.co.in', erpId: '2201330100000', branch: 'BCA', year: 3, bio: 'Building vibe-coded multi-agent AI systems, IoT mesh architectures, and backend automation engines.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aniket', collabs: 94, reputation: 1250, skills: [{ name: 'Python', level: 'Advanced' }, { name: 'Development', level: 'Advanced' }, { name: 'React', level: 'Advanced' }] },
+  { id: 'u2', name: 'Riya Sharma', email: 'riya.21cse200@niet.co.in', erpId: '2101330100200', branch: 'CSE', year: 4, bio: 'UI/UX enthusiast and Frontend Engineer. Fine-tuning system design tokens and custom design specs.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Riya', collabs: 88, reputation: 980, skills: [{ name: 'Development', level: 'Advanced' }, { name: 'Painting', level: 'Advanced' }, { name: 'Figma', level: 'Advanced' }] },
+  { id: 'u3', name: 'Aman Verma', email: 'aman.23aiml300@niet.co.in', erpId: '2301330100300', branch: 'CSE (AI/ML)', year: 2, bio: 'Data cruncher training custom layers by day, configuring network firewalls by night.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aman', collabs: 72, reputation: 640, skills: [{ name: 'Python', level: 'Advanced' }, { name: 'C++', level: 'Intermediate' }] },
+  { id: 'u4', name: 'Sneha Reddy', email: 'sneha.cs@niet.co.in', erpId: '2201330100111', branch: 'CSE', year: 3, bio: 'Full-stack software developer who loves creative arts, stage acting, and building server edge functions.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha', collabs: 69, reputation: 810, skills: [{ name: 'Development', level: 'Advanced' }, { name: 'Acting', level: 'Advanced' }, { name: 'Java', level: 'Intermediate' }] },
+  { id: 'u5', name: 'Vikram Malhotra', email: 'vikram.cyber@niet.co.in', erpId: '2101330100555', branch: 'Cybersecurity', year: 4, bio: 'Penetration tester focused on core runtime systems. Managing local tech startup initiatives.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Vikram', collabs: 66, reputation: 1120, skills: [{ name: 'Entrepreneurship', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }] },
+  { id: 'u6', name: 'Divya Teja', email: 'divya.ec@niet.co.in', erpId: '2201330100999', branch: 'Electronics', year: 3, bio: 'Embedded system firmware designer. Classical dancer and video choreographer outside labs.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Divya', collabs: 51, reputation: 590, skills: [{ name: 'Dancing', level: 'Advanced' }, { name: 'C++', level: 'Advanced' }] }
 ];
 
 const SKILL_POOL = ['Painting', 'Dancing', 'Acting', 'C++', 'Java', 'Python', 'Development', 'Entrepreneurship'];
@@ -25,7 +21,7 @@ const FIRST_NAMES = ['Yash', 'Siddharth', 'Gaurav', 'Ayush', 'Ritik', 'Karan', '
 const LAST_NAMES = ['Verma', 'Singh', 'Kumar', 'Mishra', 'Yadav', 'Sharma', 'Choudhary', 'Patel', 'Reddy', 'Gupta'];
 const BRANCHES = ['CSE', 'BCA', 'CSE (AI/ML)', 'Cybersecurity', 'Data Science', 'Electronics'];
 
-for (let i = 11; i <= 42; i++) {
+for (let i = 7; i <= 42; i++) {
   const sk1 = SKILL_POOL[i % SKILL_POOL.length];
   const sk2 = SKILL_POOL[(i + 4) % SKILL_POOL.length];
   const fn = FIRST_NAMES[i % FIRST_NAMES.length];
@@ -35,12 +31,12 @@ for (let i = 11; i <= 42; i++) {
     id: `u${i}`,
     name: `${fn} ${ln}`,
     email: `${fn.toLowerCase()}.${ln.toLowerCase()}@niet.co.in`,
-    erpId: `0221CS${250 + i}`,
+    erpId: `2201330100${100 + i}`,
     branch: BRANCHES[i % BRANCHES.length],
     year: (i % 4) + 1,
     bio: `Verified institutional profile node specialized in technical production loops and active workspace operations.`,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${fn}${i}`,
-    collabs: i + 2, 
+    collabs: i + 15, 
     reputation: 200 + (i * 20),
     skills: [{ name: sk1, level: 'Advanced' }, { name: sk2, level: 'Intermediate' }]
   });
@@ -70,7 +66,6 @@ export default function SkillSphere() {
 
   const [collabPosts, setCollabPosts] = useState(INITIAL_COLLAB_POSTS);
   const [modalOpen, setModalOpen] = useState(false);
-  const [newPost, setNewPost] = useState({ title: '', desc: '', tag: 'Project', skills: '' });
   
   const [activeChatIdx, setActiveChatIdx] = useState(0);
   const [chatInput, setChatInput] = useState('');
@@ -103,7 +98,7 @@ export default function SkillSphere() {
       year: parseInt(signUpData.year),
       bio: signUpData.bio || "Verified member of the NIET platform matrix hub.",
       avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${signUpData.name.replace(/\s+/g, '')}`,
-      collabs: 0,
+      collabs: 10,
       reputation: 120,
       skills: skillsArr.length ? skillsArr : [{ name: 'Development', level: 'Advanced' as const }]
     };
@@ -113,7 +108,7 @@ export default function SkillSphere() {
     setView('dashboard');
   };
 
-  // STRICT SEARCH FILTER WITH DESCENDING VALUE ORDERING (STAR ORDER MATRIX)
+  // REACTION MATRIX AND FILTER SORT PARAMS
   const reactiveSearchMatrix = useMemo(() => {
     const term = search.toLowerCase().trim();
     return networkUsers.filter(u => {
@@ -125,11 +120,15 @@ export default function SkillSphere() {
     }).sort((a, b) => b.collabs - a.collabs);
   }, [search, networkUsers]);
 
+  // FIX: EXPLICITLY COMPUTE REPUTATION LEADERBOARD INDEX
+  const networkRankedLeaderboard = useMemo(() => {
+    return [...networkUsers].sort((a, b) => b.reputation - a.reputation);
+  }, [networkUsers]);
+
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-indigo-500/30 font-sans antialiased overflow-x-hidden">
       <AnimatePresence mode="wait">
         
-        {/* PHASE: DUAL-MODE LOGGING PORTAL */}
         {view === 'auth' && (
           <div className="min-h-screen flex items-center justify-center p-4 max-w-lg mx-auto">
             <div className="w-full p-8 md:p-10 rounded-3xl bg-zinc-900/40 border border-zinc-800/60 backdrop-blur-3xl shadow-2xl space-y-8">
@@ -152,15 +151,15 @@ export default function SkillSphere() {
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Access Password</label>
-                    <input type="password" placeholder="Any passphrase accepted for presentation flow..." className="w-full h-12 px-4 bg-black border border-zinc-800 rounded-xl focus:border-indigo-500 outline-none text-white text-sm font-medium" onKeyDown={e=>e.key==='Enter'&&handleLogin((document.getElementById('logEmail') as HTMLInputElement)?.value||'aniket@niet.co.in')} />
+                    <input type="password" placeholder="Any passphrase accepted..." className="w-full h-12 px-4 bg-black border border-zinc-800 rounded-xl focus:border-indigo-500 outline-none text-white text-sm font-medium" onKeyDown={e=>e.key==='Enter'&&handleLogin((document.getElementById('logEmail') as HTMLInputElement)?.value||'')} />
                   </div>
-                  <button type="button" onClick={() => handleLogin((document.getElementById('logEmail') as HTMLInputElement)?.value || 'aniket@niet.co.in')} className="w-full h-12 bg-indigo-600 font-black text-sm rounded-xl text-white shadow-lg">Authorize Node Profile</button>
+                  <button type="button" onClick={() => handleLogin((document.getElementById('logEmail') as HTMLInputElement)?.value || '')} className="w-full h-12 bg-indigo-600 font-black text-sm rounded-xl text-white shadow-lg">Authorize Node Profile</button>
                 </div>
               ) : (
                 <form onSubmit={handleSignupSubmit} className="space-y-4 max-h-[380px] overflow-y-auto pr-1">
                   <input type="text" required placeholder="Full Name..." className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.name} onChange={e=>setSignUpData({...signUpData, name: e.target.value})} />
                   <input type="email" required placeholder="name@niet.co.in" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.email} onChange={e=>setSignUpData({...signUpData, email: e.target.value})} />
-                  <input type="text" required placeholder="ERP ID (e.g., 0221BCA089)" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.erpId} onChange={e=>setSignUpData({...signUpData, erpId: e.target.value})} />
+                  <input type="text" required placeholder="ERP ID (e.g., 2201330100000)" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.erpId} onChange={e=>setSignUpData({...signUpData, erpId: e.target.value})} />
                   <div className="grid grid-cols-2 gap-3">
                     <select className="w-full h-11 px-3 bg-black border border-zinc-800 rounded-xl text-xs text-zinc-400 outline-none" value={signUpData.branch} onChange={e=>setSignUpData({...signUpData, branch: e.target.value})}>
                       {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
@@ -169,7 +168,7 @@ export default function SkillSphere() {
                       {['1','2','3','4'].map(y => <option key={y} value={y}>Year {y}</option>)}
                     </select>
                   </div>
-                  <input type="text" placeholder="Skills (e.g. Painting, C++, Java, Development)" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.skills} onChange={e=>setSignUpData({...signUpData, skills: e.target.value})} />
+                  <input type="text" placeholder="Skills (e.g. Painting, C++, Java)" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.skills} onChange={e=>setSignUpData({...signUpData, skills: e.target.value})} />
                   <textarea placeholder="Brief presentation bio..." rows={2} className="w-full p-3 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none resize-none" value={signUpData.bio} onChange={e=>setSignUpData({...signUpData, bio: e.target.value})} />
                   <button type="submit" className="w-full h-11 bg-indigo-600 font-black text-xs rounded-xl text-white uppercase tracking-wider">Initialize Onboarding Vector</button>
                 </form>
@@ -178,11 +177,9 @@ export default function SkillSphere() {
           </div>
         )}
 
-        {/* PHASE: CORE DASHBOARD WINDOW CORE */}
         {view === 'dashboard' && (
           <div className="flex min-h-screen flex-col md:flex-row">
             
-            {/* Nav Menu Drawer */}
             <nav className="w-full md:w-72 border-r border-zinc-900 p-8 flex flex-col justify-between bg-zinc-950/40 backdrop-blur-xl shrink-0">
               <div className="space-y-12">
                 <div className="flex items-center gap-3 font-black text-2xl tracking-tighter cursor-pointer" onClick={() => { setActiveTab('Dashboard'); setSearch(''); }}>
@@ -207,7 +204,6 @@ export default function SkillSphere() {
               </div>
             </nav>
 
-            {/* Display Window */}
             <main className="flex-1 p-6 md:p-12 overflow-y-auto max-w-7xl mx-auto w-full">
               <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
                 <div>
@@ -216,14 +212,14 @@ export default function SkillSphere() {
                 </div>
                 <div className="relative group">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" size={18}/>
-                  <input type="text" placeholder="Filter e.g. Painting, C++, Java, CSE..." className="w-full md:w-85 h-12 pl-12 pr-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-sm text-indigo-400 font-mono uppercase focus:outline-none focus:border-indigo-500 transition-all" value={search} onChange={e=>setSearch(e.target.value)} />
+                  <input type="text" placeholder="Filter e.g. Painting, C++, Java, CSE..." className="w-full md:w-80 h-12 pl-12 pr-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-sm text-indigo-400 font-mono uppercase focus:outline-none focus:border-indigo-500 transition-all" value={search} onChange={e=>setSearch(e.target.value)} />
                 </div>
               </header>
 
               <div className="h-full">
                 {search.trim() !== '' ? (
                   <div className="space-y-6">
-                    <p className="text-xs font-bold text-zinc-500 uppercase">Query Matches ({reactiveSearchMatrix.length} Profiles Found Ranked By Star Count)</p>
+                    <p className="text-xs font-bold text-zinc-500 uppercase">Query Matches ({reactiveSearchMatrix.length} Profiles Found)</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {reactiveSearchMatrix.map(u => (
                         <div key={u.id} onClick={() => setSelectedStudent(u)} className="p-6 rounded-3xl bg-zinc-900/40 border border-zinc-800 hover:border-indigo-500/40 cursor-pointer transition-all flex flex-col justify-between h-60 shadow-xl group">
@@ -250,7 +246,7 @@ export default function SkillSphere() {
                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                         <div className="lg:col-span-2 space-y-10">
                           <section className="space-y-6">
-                            <h3 className="text-base font-black uppercase text-zinc-400 flex items-center gap-2"><Award size={18} className="text-indigo-400"/> Network Profiles (Star Count Ranked)</h3>
+                            <h3 className="text-base font-black uppercase text-zinc-400 flex items-center gap-2"><Award size={18} className="text-indigo-400"/> Top Performers</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               {reactiveSearchMatrix.slice(0, 4).map(u => (
                                 <div key={u.id} onClick={() => setSelectedStudent(u)} className="p-6 rounded-3xl bg-zinc-900/30 border border-zinc-800 hover:border-indigo-500/40 transition-all cursor-pointer group flex flex-col justify-between h-56 shadow-md">
@@ -264,7 +260,7 @@ export default function SkillSphere() {
                                     <p className="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed font-normal">{u.bio}</p>
                                   </div>
                                   <div className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-900/60 mt-2">
-                                    {u.skills.slice(0,3).map(s => <span key={s.name} className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-zinc-950 text-zinc-500">{s.name}</span>)}
+                                    {u.skills.slice(0,3).map(s => <span key={s.name} className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-zinc-900 text-zinc-500">{s.name}</span>)}
                                   </div>
                                 </div>
                               ))}
@@ -288,7 +284,7 @@ export default function SkillSphere() {
                           <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-950/30 to-transparent border border-indigo-500/20 text-center shadow-2xl">
                             <Sparkles className="mx-auto mb-4 text-indigo-400" size={28} />
                             <h4 className="text-lg font-black text-white mb-2 tracking-tight">Need a Squad Node?</h4>
-                            <p className="text-xs text-zinc-500 font-medium mb-6">Broadcast layout parameters onto the global community telemetry stream.</p>
+                            <p className="text-xs text-zinc-500 font-medium mb-6">Broadcast parameters onto the community telemetry stream.</p>
                             <button type="button" onClick={() => setActiveTab('Squad Board')} className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl text-xs uppercase tracking-wider">Open Squad Post</button>
                           </div>
                         </div>
@@ -298,7 +294,7 @@ export default function SkillSphere() {
                     {activeTab === 'Network Explore' && (
                       <div className="space-y-6">
                         <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
-                          <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Active Network Directory Index ({reactiveSearchMatrix.length} Star-Sorted Nodes)</p>
+                          <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Active Network Directory Index ({reactiveSearchMatrix.length} Nodes)</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                           {reactiveSearchMatrix.map(u => (
@@ -328,8 +324,8 @@ export default function SkillSphere() {
                     {activeTab === 'Squad Board' && (
                       <div className="max-w-3xl mx-auto space-y-6">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Active System Pipeline Formations</p>
-                          <button type="button" onClick={() => setModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-white text-black font-black text-xs rounded-xl shadow-md"><PlusCircle size={14}/> Create Post</button>
+                          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Active Formations</p>
+                          <button type="button" onClick={() => setCollabPosts([...collabPosts, { id: `p_${Date.now()}`, title: 'Custom Operational Project Stream', creatorName: user?.name || 'Aniket', tag: 'Project', desc: 'Bespoke automation pipeline mapping focus targets.', skills: ['Development'], likes: 1, applied: false }])} className="flex items-center gap-2 px-4 py-2 bg-white text-black font-black text-xs rounded-xl shadow-md"><PlusCircle size={14}/> Create Post</button>
                         </div>
                         <div className="space-y-4">
                           {collabPosts.map(post => (
@@ -366,7 +362,7 @@ export default function SkillSphere() {
                           ))}
                         </div>
                         <div className="flex-1 flex flex-col justify-between bg-black/10">
-                          <div className="p-4 bg-zinc-950/40 border-b border-zinc-900 text-xs font-black text-zinc-300 uppercase flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Channel Session: {chatChannels[activeChatIdx].name}</div>
+                          <div className="p-4 bg-zinc-950/40 border-b border-zinc-900 text-xs font-black text-zinc-300 uppercase flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Session: {chatChannels[activeChatIdx].name}</div>
                           <div className="flex-1 p-6 overflow-y-auto space-y-4">
                             {chatChannels[activeChatIdx].msgs.map((m, i) => (
                               <div key={i} className={`flex ${m.s === 'you' ? 'justify-end' : 'justify-start'}`}>
@@ -378,9 +374,8 @@ export default function SkillSphere() {
                             e.preventDefault(); if(!chatInput.trim()) return;
                             const copy = [...chatChannels]; copy[activeChatIdx].msgs.push({ s: 'you', t: chatInput.trim() });
                             setChatChannels(copy); setChatInput('');
-                            setTimeout(() => { copy[activeChatIdx].msgs.push({ s: 'them', t: 'Institutional pipeline acknowledgement bit mapped.' }); setChatChannels([...copy]); }, 800);
                           }} className="p-4 border-t border-zinc-900 flex gap-3 bg-zinc-950/40">
-                            <input type="text" placeholder="Type data stream payload text blocks..." className="flex-1 bg-black border border-zinc-800 h-11 px-4 rounded-xl text-xs text-white outline-none" value={chatInput} onChange={e=>setChatInput(e.target.value)} />
+                            <input type="text" placeholder="Type text..." className="flex-1 bg-black border border-zinc-800 h-11 px-4 rounded-xl text-xs text-white outline-none" value={chatInput} onChange={e=>setChatInput(e.target.value)} />
                             <button type="submit" className="w-11 h-11 bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center text-white"><Send size={14}/></button>
                           </form>
                         </div>
@@ -389,7 +384,7 @@ export default function SkillSphere() {
 
                     {activeTab === 'Leaderboard' && (
                       <div className="max-w-2xl mx-auto space-y-4">
-                        <div className="p-4 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl text-xs font-bold text-zinc-400 flex items-center gap-3"><ShieldCheck className="text-indigo-400" size={16}/> <span>Rank metrics mapped from core active reputation parameters.</span></div>
+                        <div className="p-4 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl text-xs font-bold text-zinc-400 flex items-center gap-3"><ShieldCheck className="text-indigo-400" size={16}/> <span>Rank metrics mapped from reputation parameters.</span></div>
                         <div className="border border-zinc-900 rounded-2xl overflow-hidden bg-zinc-950/20">
                           {networkRankedLeaderboard.map((u, i) => (
                             <div key={u.id} className="p-4 flex items-center justify-between border-b border-zinc-900/60 last:border-b-0 hover:bg-zinc-900/20 transition-all">
@@ -409,7 +404,6 @@ export default function SkillSphere() {
               </div>
             </main>
 
-            {/* DYNAMIC CARD SELECTION METRIC MODAL INFRASTRUCTURE */}
             <AnimatePresence>
               {selectedStudent && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -448,7 +442,7 @@ export default function SkillSphere() {
                       </div>
                     </div>
 
-                    <button type="button" onClick={() => { alert(`Connection transmission request initialized for ${selectedStudent.name}. Handshake handshake protocol logged to institutional cluster nodes.`); setSelectedStudent(null); }} className="w-full mt-6 h-12 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                    <button type="button" onClick={() => { alert(`Connection request sent to ${selectedStudent.name}.`); setSelectedStudent(null); }} className="w-full mt-6 h-12 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
                       <LinkIcon size={14} /> Connect on NIET Matrix
                     </button>
                   </motion.div>
