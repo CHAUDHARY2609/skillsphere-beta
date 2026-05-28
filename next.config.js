@@ -4,8 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Force Next.js to transpile these packages to avoid "Module not found" errors
-  transpilePackages: ['lucide-react', 'recharts'],
+  // This tells Next.js how to handle these libraries specifically
+  transpilePackages: ['lucide-react', 'recharts']
 };
 
 module.exports = nextConfig;
