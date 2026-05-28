@@ -1,8 +1,8 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Star, MessageSquare, Code, Users, Award, TrendingUp, BarChart3, LogOut, Send, CheckCircle, PlusCircle, LayoutDashboard, Trophy, ThumbsUp, AlertCircle, Briefcase, Github, Linkedin, Zap, Sparkles, Terminal } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { Search, Star, LogOut, Trophy, TrendingUp, Zap, Sparkles } from 'lucide-react';
+import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const MOCK_USERS = [
   { id: 'u1', name: 'Aniket', email: 'aniket@niet.co.in', erpId: '0221BCA089', branch: 'BCA', year: 3, bio: 'Building vibe-coded multi-agent AI systems, IoT mesh architectures, and real-time automation tools.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aniket', rating: 4.9, reviews: 42, reputation: 1250, skills: [{ name: 'React', level: 'Advanced' }, { name: 'AI/ML', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }], links: { github: '#' } },
@@ -70,7 +70,7 @@ export default function SkillSphere() {
 
         {view === 'dashboard' && (
           <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex min-h-screen flex-col md:flex-row">
-            <nav className="w-full md:w-72 border-r border-zinc-900 p-8 flex flex-col justify-between bg-zinc-950/50 backdrop-blur-xl">
+            <nav className="w-full md:w-72 border-r border-zinc-900 p-8 flex flex-col justify-between bg-zinc-950/50 backdrop-blur-xl shrink-0">
               <div className="space-y-12">
                 <div className="flex items-center gap-3 font-black text-2xl tracking-tighter cursor-pointer" onClick={() => setView('landing')}>
                   <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20"><Zap size={20} className="fill-white"/></div>
@@ -90,7 +90,7 @@ export default function SkillSphere() {
               </div>
               <div className="pt-8 border-t border-zinc-900 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img src={user?.avatar} className="w-10 h-10 rounded-full border border-zinc-800" />
+                  <img src={user?.avatar} className="w-10 h-10 rounded-full border border-zinc-800" alt="Avatar" />
                   <div>
                     <p className="text-xs font-black text-white">{user?.name}</p>
                     <p className="text-[10px] font-bold text-zinc-500 uppercase">{user?.branch} Node</p>
@@ -104,7 +104,10 @@ export default function SkillSphere() {
               <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
                 <div>
                   <h2 className="text-3xl font-black tracking-tight text-white mb-1">Ecosystem Status</h2>
-                  <p className="text-sm text-zinc-500 font-medium tracking-wide flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"/> Node operational across institutional network.</p>
+                  <div className="text-sm text-zinc-500 font-medium tracking-wide flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <span>Node operational across institutional network.</span>
+                  </div>
                 </div>
                 <div className="relative group">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-indigo-500 transition-colors" size={18}/>
@@ -133,7 +136,7 @@ export default function SkillSphere() {
                           className="p-6 rounded-3xl bg-zinc-900/30 border border-zinc-900 hover:border-zinc-800 transition-all cursor-pointer group"
                         >
                           <div className="flex items-center justify-between mb-6">
-                            <img src={u.avatar} className="w-12 h-12 rounded-2xl bg-zinc-950 border border-zinc-800 p-1" />
+                            <img src={u.avatar} className="w-12 h-12 rounded-2xl bg-zinc-950 border border-zinc-800 p-1" alt="avatar" />
                             <div className="px-3 py-1 bg-black rounded-xl border border-zinc-900 text-[10px] font-black text-indigo-400 flex items-center gap-1.5 shadow-inner">
                               <Star size={10} className="fill-indigo-400"/> {u.rating}
                             </div>
@@ -156,7 +159,7 @@ export default function SkillSphere() {
                     <h3 className="text-lg font-black tracking-tight mb-8 flex items-center gap-2 uppercase"><TrendingUp size={18} className="text-indigo-500"/> Skill Saturation Graph</h3>
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={[{n:'Jan', v:400},{n:'Feb', v:700},{n:'Mar', v:500},{n:'Apr', v:900},{n:'May', v:1200}]}>
+                        <AreaChart data={[{n:'Jan', v:400},{n:'Feb', v:700},{n:'Mar', v:500},{n:'Apr', v:900},{n:'May', v:1200}]} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                           <defs>
                             <linearGradient id="colorV" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
@@ -164,7 +167,7 @@ export default function SkillSphere() {
                             </linearGradient>
                           </defs>
                           <XAxis dataKey="n" stroke="#27272a" fontSize={10} tickLine={false} axisLine={false} />
-                          <Tooltip contentStyle={{background:'#09090b', border:'#18181b', borderRadius:'12px'}} />
+                          <Tooltip contentStyle={{background:'#09090b', borderColor:'#18181b', borderRadius:'12px'}} />
                           <Area type="monotone" dataKey="v" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorV)" />
                         </AreaChart>
                       </ResponsiveContainer>
