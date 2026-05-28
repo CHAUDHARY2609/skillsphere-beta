@@ -1,208 +1,566 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Star, LogOut, Trophy, TrendingUp, Zap, Sparkles } from 'lucide-react';
+import { Search, Star, MessageSquare, Users, Award, TrendingUp, LogOut, Send, PlusCircle, LayoutDashboard, Trophy, ThumbsUp, Zap, Sparkles, Terminal, Filter, ShieldCheck, UserPlus, KeyRound } from 'lucide-react';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-const MOCK_USERS = [
-  { id: 'u1', name: 'Aniket', email: 'aniket@niet.co.in', erpId: '0221BCA089', branch: 'BCA', year: 3, bio: 'Building vibe-coded multi-agent AI systems, IoT mesh architectures, and real-time automation tools.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aniket', rating: 4.9, reviews: 42, reputation: 1250, skills: [{ name: 'React', level: 'Advanced' }, { name: 'AI/ML', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }], links: { github: '#' } },
-  { id: 'u2', name: 'Riya Sharma', email: 'riya.s@niet.co.in', erpId: '0221CSE045', branch: 'CSE', year: 4, bio: 'UI/UX enthusiast and Frontend Engineer. Obsessed with clean micro-interactions and sleek aesthetics.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Riya', rating: 4.8, reviews: 31, reputation: 980, skills: [{ name: 'UI/UX', level: 'Advanced' }, { name: 'Figma', level: 'Advanced' }], links: { linkedin: '#' } },
-  { id: 'u3', name: 'Aman Verma', email: 'aman.v@niet.co.in', erpId: '0221AI012', branch: 'CSE (AI/ML)', year: 2, bio: 'Data cruncher and algorithm builder. Training models by day, hacking systems by night.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aman', rating: 4.6, reviews: 19, reputation: 640, skills: [{ name: 'AI/ML', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }], links: { github: '#' } }
+// ==========================================
+// 1. DATA INFRASTRUCTURE (40+ FULL PROFILES)
+// ==========================================
+const SEED_USERS = [
+  { id: 'u1', name: 'Aniket Chaudhary', email: 'aniket@niet.co.in', erpId: '0221BCA089', branch: 'BCA', year: 3, bio: 'Building vibe-coded multi-agent AI systems, IoT mesh architectures, and backend automation engines.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aniket', collabs: 94, reputation: 1250, skills: [{ name: 'Python', level: 'Advanced' }, { name: 'Development', level: 'Advanced' }, { name: 'React', level: 'Advanced' }] },
+  { id: 'u2', name: 'Riya Sharma', email: 'riya.s@niet.co.in', erpId: '0221CSE045', branch: 'CSE', year: 4, bio: 'UI/UX enthusiast and Frontend Engineer. Fine-tuning system design tokens and custom design specs.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Riya', collabs: 88, reputation: 980, skills: [{ name: 'Development', level: 'Advanced' }, { name: 'Painting', level: 'Advanced' }, { name: 'Figma', level: 'Advanced' }] },
+  { id: 'u3', name: 'Aman Verma', email: 'aman.v@niet.co.in', erpId: '0221AI012', branch: 'CSE (AI/ML)', year: 2, bio: 'Data cruncher training custom layers by day, configuring network firewalls by night.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aman', collabs: 72, reputation: 640, skills: [{ name: 'Python', level: 'Advanced' }, { name: 'C++', level: 'Intermediate' }] },
+  { id: 'u4', name: 'Sneha Reddy', email: 'sneha.r@niet.co.in', erpId: '0221CS098', branch: 'CSE', year: 3, bio: 'Full-stack software developer who loves creative arts, stage acting, and building server edge functions.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha', collabs: 69, reputation: 810, skills: [{ name: 'Development', level: 'Advanced' }, { name: 'Acting', level: 'Advanced' }, { name: 'Java', level: 'Intermediate' }] },
+  { id: 'u5', name: 'Vikram Malhotra', email: 'vikram.m@niet.co.in', erpId: '0221CY022', branch: 'Cybersecurity', year: 4, bio: 'Penetration tester focused on core runtime systems. Managing local tech startup initiatives.', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Vikram', collabs: 66, reputation: 1120, skills: [{ name: 'Entrepreneurship', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }] },
+  { id: 'u6', name: 'Divya Teja', email: 'divya.t@niet.co.in', erpId: '0221EC078', branch: 'Electronics', year: 3, bio: 'Embedded system firmware designer. Classical dancer and video choreographer outside labs.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Divya', collabs: 51, reputation: 590, skills: [{ name: 'Dancing', level: 'Advanced' }, { name: 'C++', level: 'Advanced' }] },
+  { id: 'u7', name: 'Aditya Joshi', email: 'aditya.j@niet.co.in', erpId: '0221DS034', branch: 'Data Science', year: 2, bio: 'Analyzing statistical arrays. Hobbyist canvas painter working with oil medium textures.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aditya', collabs: 48, reputation: 480, skills: [{ name: 'Painting', level: 'Advanced' }, { name: 'Python', level: 'Intermediate' }] },
+  { id: 'u8', name: 'Ishita Kapoor', email: 'ishita.k@niet.co.in', erpId: '0221CSE091', branch: 'CSE', year: 3, bio: 'Western dance coordinator and interface developer creating modular style primitives.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ishita', collabs: 45, reputation: 920, skills: [{ name: 'Dancing', level: 'Advanced' }, { name: 'Development', level: 'Intermediate' }] },
+  { id: 'u9', name: 'Arjun Mehta', email: 'arjun.m@niet.co.in', erpId: '0221BCA054', branch: 'BCA', year: 4, bio: 'SaaS framework developer specialized in high-performance Java enterprise applications.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', collabs: 42, reputation: 1180, skills: [{ name: 'Java', level: 'Advanced' }, { name: 'Development', level: 'Advanced' }, { name: 'Entrepreneurship', level: 'Advanced' }] },
+  { id: 'u10', name: 'Kriti Singhal', email: 'kriti.s@niet.co.in', erpId: '0221DS011', branch: 'Data Science', year: 4, bio: 'Theater artist, public orator, and analytical database layout developer.', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kriti', collabs: 39, reputation: 1040, skills: [{ name: 'Acting', level: 'Advanced' }, { name: 'Python', level: 'Advanced' }] }
 ];
 
+const SKILL_POOL = ['Painting', 'Dancing', 'Acting', 'C++', 'Java', 'Python', 'Development', 'Entrepreneurship'];
+const FIRST_NAMES = ['Rohan', 'Kabir', 'Tanvi', 'Mehak', 'Yash', 'Siddharth', 'Gaurav', 'Ayush', 'Ritik', 'Karan', 'Pooja', 'Anjali', 'Swati', 'Preeti', 'Simran'];
+const LAST_NAMES = ['Verma', 'Singh', 'Kumar', 'Mishra', 'Yadav', 'Sharma', 'Choudhary', 'Patel', 'Reddy', 'Gupta'];
+const BRANCHES = ['CSE', 'BCA', 'CSE (AI/ML)', 'Cybersecurity', 'Data Science', 'Electronics'];
+
+for (let i = 11; i <= 42; i++) {
+  const sk1 = SKILL_POOL[i % SKILL_POOL.length];
+  const sk2 = SKILL_POOL[(i + 3) % SKILL_POOL.length];
+  const fn = FIRST_NAMES[i % FIRST_NAMES.length];
+  const ln = LAST_NAMES[i % LAST_NAMES.length];
+  
+  SEED_USERS.push({
+    id: `u${i}`,
+    name: `${fn} ${ln}`,
+    email: `${fn.toLowerCase()}.${ln.toLowerCase()}@niet.co.in`,
+    erpId: `0221CS${200 + i}`,
+    branch: BRANCHES[i % BRANCHES.length],
+    year: (i % 4) + 1,
+    bio: `Verified institutional profile node specialized in technical production loops and active workspace operations.`,
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${fn}${i}`,
+    collabs: 5 + (i % 30), 
+    reputation: 200 + (i * 20),
+    skills: [{ name: sk1, level: 'Advanced' }, { name: sk2, level: 'Intermediate' }]
+  });
+}
+
+const INITIAL_COLLAB_POSTS = [
+  { id: 'p1', title: 'Hackathon Partner Needed for Smart Campus System', creatorName: 'Riya Sharma', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Riya', tag: 'Hackathon', desc: 'Looking for a solid Python developer to integrate core data assets into our application layers.', skills: ['Python', 'Development'], likes: 24, applied: false },
+  { id: 'p2', title: 'E-Commerce UI Revamp & Creative Arts Portal', creatorName: 'Aniket Chaudhary', avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aniket', tag: 'Project', desc: 'Need a creative profile to deploy custom presentation pages for college art societies.', skills: ['Painting', 'Development'], likes: 42, applied: false }
+];
+
+// ==========================================
+// 2. RUNTIME APPLICATION MAIN SYSTEM ENGINE
+// ==========================================
 export default function SkillSphere() {
-  const [view, setView] = useState('landing');
-  const [user, setUser] = useState(null);
+  const [view, setView] = useState<'auth' | 'dashboard'>('auth');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  
+  const [networkUsers, setNetworkUsers] = useState(SEED_USERS);
+  const [user, setUser] = useState<typeof SEED_USERS[0] | null>(null);
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [search, setSearch] = useState('');
+  
+  const [signUpData, setSignUpData] = useState({
+    name: '', email: '', erpId: '', branch: 'CSE', year: '1', bio: '', skills: ''
+  });
 
-  const handleLogin = (email) => {
-    if (email.endsWith('@niet.co.in')) {
-      setUser(MOCK_USERS[0]);
-      setView('dashboard');
-    } else {
-      alert("Verification Failed: Access restricted to @niet.co.in nodes.");
+  const [collabPosts, setCollabPosts] = useState(INITIAL_COLLAB_POSTS);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [newPost, setNewPost] = useState({ title: '', desc: '', tag: 'Project', skills: '' });
+  
+  const [activeChatIdx, setActiveChatIdx] = useState(0);
+  const [chatInput, setChatInput] = useState('');
+  const [chatChannels, setChatChannels] = useState([
+    { name: 'Riya Sharma', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Riya', msgs: [{ s: 'them', t: 'Hey Aniket, did you see the new painting profiles added to the registry?' }, { s: 'you', t: 'Yeah, just updated the layout matrix filters to rank them.' }] },
+    { name: 'Aman Verma', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aman', msgs: [{ s: 'them', t: 'Can we test out the new C++ structural components tomorrow?' }] }
+  ]);
+
+  const executeLoginValidation = (email: string) => {
+    if (!email.toLowerCase().endsWith('@niet.co.in')) {
+      alert("Access Denied: Node restricted to verified @niet.co.in credentials.");
+      return;
     }
+    const matchedProfile = networkUsers.find(u => u.email.toLowerCase() === email.toLowerCase()) || networkUsers[0];
+    setUser(matchedProfile);
+    setView('dashboard');
   };
 
-  return (
-    <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-indigo-500/30 font-sans">
-      <AnimatePresence mode="wait">
-        {view === 'landing' && (
-          <motion.div key="landing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
-            <div className="w-20 h-20 mb-8 rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-2xl shadow-indigo-500/20">
-               <Sparkles className="text-white" size={40} />
-            </div>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-white via-zinc-400 to-zinc-800 bg-clip-text text-transparent">SkillSphere</h1>
-            <p className="text-zinc-400 max-w-xl text-lg md:text-xl mb-12 font-medium">The high-rep networking node for NIET engineers, builders, and designers.</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button onClick={() => setView('login')} className="px-10 py-5 bg-white text-black font-black rounded-2xl hover:scale-105 transition-all shadow-xl">Initialize Connection</button>
-              <button className="px-10 py-5 bg-zinc-900 text-white font-bold rounded-2xl border border-zinc-800 hover:bg-zinc-800 transition-all">View Ecosystem</button>
-            </div>
-          </motion.div>
-        )}
+  const executeAccountCreation = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!signUpData.name || !signUpData.email || !signUpData.erpId) {
+      alert("Missing Data: Please fill out all required parameters.");
+      return;
+    }
+    if (!signUpData.email.toLowerCase().endsWith('@niet.co.in')) {
+      alert("Invalid Suffix: Email address must append @niet.co.in domain extension.");
+      return;
+    }
 
-        {view === 'login' && (
-          <motion.div key="login" className="flex items-center justify-center min-h-screen p-4">
-            <div className="w-full max-w-md p-10 rounded-3xl bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-3xl shadow-2xl">
-              <div className="text-center mb-10">
-                <h2 className="text-3xl font-black text-white mb-2 tracking-tight">Identity Node</h2>
-                <p className="text-zinc-500 text-sm">Access keys required for institution validation.</p>
+    const transformedSkills = signUpData.skills.split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(s => ({ name: s.charAt(0).toUpperCase() + s.slice(1), level: 'Advanced' as const }));
+
+    const freshlyGeneratedProfile = {
+      id: `u_${Date.now()}`,
+      name: signUpData.name,
+      email: signUpData.email.toLowerCase(),
+      erpId: signUpData.erpId,
+      branch: signUpData.branch,
+      year: parseInt(signUpData.year),
+      bio: signUpData.bio || "Newly verified platform contributor node.",
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${signUpData.name.replace(/\s+/g, '')}`,
+      collabs: 0,
+      reputation: 100,
+      skills: transformedSkills.length ? transformedSkills : [{ name: 'Development', level: 'Advanced' as const }]
+    };
+
+    setNetworkUsers([freshlyGeneratedProfile, ...networkUsers]);
+    setUser(freshlyGeneratedProfile);
+    setView('dashboard');
+  };
+
+  const reactiveSearchMatrix = useMemo(() => {
+    const term = search.toLowerCase().trim();
+    return networkUsers.filter(u => {
+      return (
+        u.name.toLowerCase().includes(term) ||
+        u.branch.toLowerCase().includes(term) ||
+        u.skills.some(s => s.name.toLowerCase().includes(term))
+      );
+    }).sort((a, b) => b.collabs - a.collabs);
+  }, [search, networkUsers]);
+
+  const networkRankedLeaderboard = useMemo(() => {
+    return [...networkUsers].sort((a, b) => b.reputation - a.reputation);
+  }, [networkUsers]);
+
+  return (
+    <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-indigo-500/30 font-sans antialiased overflow-x-hidden">
+      <AnimatePresence mode="wait">
+        
+        {view === 'auth' && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} className="min-h-screen flex items-center justify-center p-4 max-w-lg mx-auto">
+            <div className="w-full p-8 md:p-10 rounded-3xl bg-zinc-900/40 border border-zinc-800/60 backdrop-blur-3xl shadow-2xl space-y-8">
+              
+              <div className="flex flex-col items-center text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg"><Sparkles className="text-white" size={24}/></div>
+                <h1 className="text-3xl font-black tracking-tight text-white">SkillSphere Gateway</h1>
+                <p className="text-xs text-zinc-500 max-w-xs font-medium">Verify structural student credentials to interface with the local network.</p>
               </div>
-              <div className="space-y-6">
-                <div>
-                  <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2 block">Institutional Email</label>
-                  <input 
-                    type="email" 
-                    placeholder="name@niet.co.in" 
-                    className="w-full h-14 px-5 bg-black border border-zinc-800 rounded-2xl focus:border-indigo-500 outline-none transition-all text-white font-medium"
-                    onKeyDown={(e) => e.key === 'Enter' && handleLogin(e.currentTarget.value)}
-                  />
-                </div>
-                <button onClick={() => handleLogin('aniket@niet.co.in')} className="w-full h-14 bg-indigo-600 font-black rounded-2xl hover:bg-indigo-500 shadow-lg shadow-indigo-600/20 transition-all">Authorize Profile</button>
-                <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 text-[10px] text-zinc-500 leading-relaxed italic">
-                  Note: Any input ending with @niet.co.in will pass for this demo version.
-                </div>
+
+              <div className="flex bg-black p-1 rounded-xl border border-zinc-900">
+                <button type="button" onClick={() => setAuthMode('login')} className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 ${authMode === 'login' ? 'bg-zinc-900 text-indigo-400 border border-zinc-800' : 'text-zinc-500 hover:text-zinc-300'}`}><KeyRound size={14}/> Node Log In</button>
+                <button type="button" onClick={() => setAuthMode('signup')} className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 ${authMode === 'signup' ? 'bg-zinc-900 text-indigo-400 border border-zinc-800' : 'text-zinc-500 hover:text-zinc-300'}`}><UserPlus size={14}/> Create Account</button>
               </div>
+
+              {authMode === 'login' && (
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">College Email Endpoint</label>
+                    <input 
+                      type="email" id="loginEmail" placeholder="your.name@niet.co.in" 
+                      className="w-full h-12 px-4 bg-black border border-zinc-800 rounded-xl focus:border-indigo-500 outline-none text-white text-sm font-medium" 
+                      onKeyDown={e => e.key === 'Enter' && executeLoginValidation(e.currentTarget.value)}
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Access Key Password</label>
+                    <input 
+                      type="password" placeholder="Any character string allowed for demo..." 
+                      className="w-full h-12 px-4 bg-black border border-zinc-800 rounded-xl focus:border-indigo-500 outline-none text-white text-sm font-medium" 
+                      onKeyDown={e => {
+                        if(e.key === 'Enter') {
+                          const val = (document.getElementById('loginEmail') as HTMLInputElement)?.value;
+                          executeLoginValidation(val || 'aniket@niet.co.in');
+                        }
+                      }}
+                    />
+                  </div>
+                  <button type="button" onClick={() => {
+                    const val = (document.getElementById('loginEmail') as HTMLInputElement)?.value;
+                    executeLoginValidation(val || 'aniket@niet.co.in');
+                  }} className="w-full h-12 bg-indigo-600 font-black text-sm rounded-xl hover:bg-indigo-500 text-white shadow-lg transition-colors pt-0.5">Authorize Identity</button>
+                </div>
+              )}
+
+              {authMode === 'signup' && (
+                <form onSubmit={executeAccountCreation} className="space-y-4 max-h-[420px] overflow-y-auto pr-1">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Full Name</label>
+                    <input type="text" required placeholder="e.g. Aniket Chaudhary" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.name} onChange={e=>setSignUpData({...signUpData, name: e.target.value})} />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">College Email ID</label>
+                    <input type="email" required placeholder="name@niet.co.in" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.email} onChange={e=>setSignUpData({...signUpData, email: e.target.value})} />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">ERP Identification ID</label>
+                    <input type="text" required placeholder="e.g. 0221BCA089" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.erpId} onChange={e=>setSignUpData({...signUpData, erpId: e.target.value})} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Branch Group</label>
+                      <select className="w-full h-11 px-3 bg-black border border-zinc-800 rounded-xl text-xs text-zinc-400 outline-none" value={signUpData.branch} onChange={e=>setSignUpData({...signUpData, branch: e.target.value})}>
+                        {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Current Year</label>
+                      <select className="w-full h-11 px-3 bg-black border border-zinc-800 rounded-xl text-xs text-zinc-400 outline-none" value={signUpData.year} onChange={e=>setSignUpData({...signUpData, year: e.target.value})}>
+                        {['1','2','3','4'].map(y => <option key={y} value={y}>Year {y}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Capability Skills (Comma Separated)</label>
+                    <input type="text" placeholder="e.g. Painting, Dancing, React, C++, Java" className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none" value={signUpData.skills} onChange={e=>setSignUpData({...signUpData, skills: e.target.value})} />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Developer Bio Manifest</label>
+                    <textarea placeholder="Describe your structural profile focus..." rows={2} className="w-full p-3 bg-black border border-zinc-800 rounded-xl text-xs text-white outline-none resize-none" value={signUpData.bio} onChange={e=>setSignUpData({...signUpData, bio: e.target.value})} />
+                  </div>
+                  <button type="submit" className="w-full h-12 bg-indigo-600 font-black text-sm rounded-xl text-white shadow-lg pt-0.5">Initialize Account Node</button>
+                </form>
+              )}
             </div>
           </motion.div>
         )}
 
         {view === 'dashboard' && (
-          <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex min-h-screen flex-col md:flex-row">
-            <nav className="w-full md:w-72 border-r border-zinc-900 p-8 flex flex-col justify-between bg-zinc-950/50 backdrop-blur-xl shrink-0">
+          <div className="flex min-h-screen flex-col md:flex-row">
+            
+            <nav className="w-full md:w-72 border-r border-zinc-900 p-8 flex flex-col justify-between bg-zinc-950/40 backdrop-blur-xl shrink-0">
               <div className="space-y-12">
-                <div className="flex items-center gap-3 font-black text-2xl tracking-tighter cursor-pointer" onClick={() => setView('landing')}>
-                  <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20"><Zap size={20} className="fill-white"/></div>
-                  Sphere
+                <div className="flex items-center gap-3 font-black text-2xl tracking-tighter cursor-pointer" onClick={() => { setActiveTab('Dashboard'); setSearch(''); }}>
+                  <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20"><Zap size={20} className="fill-white text-white"/></div>
+                  <span className="bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">Sphere</span>
                 </div>
                 <div className="space-y-2">
-                  {['Dashboard', 'Network Explore', 'Squad Board', 'Peer Chat', 'Leaderboard'].map(item => (
+                  {[
+                    { label: 'Dashboard', icon: <LayoutDashboard size={16}/> },
+                    { label: 'Network Explore', icon: <Search size={16}/> },
+                    { label: 'Squad Board', icon: <Users size={16}/> },
+                    { label: 'Peer Chat', icon: <MessageSquare size={16}/> },
+                    { label: 'Leaderboard', icon: <Trophy size={16}/> }
+                  ].map(item => (
                     <button 
-                      key={item} 
-                      onClick={() => setActiveTab(item)}
-                      className={`w-full text-left px-5 py-4 rounded-2xl transition-all text-sm font-bold ${activeTab === item ? 'bg-zinc-900 text-indigo-400 border border-zinc-800 shadow-inner' : 'text-zinc-500 hover:text-white hover:bg-zinc-900/50'}`}
+                      key={item.label} 
+                      onClick={() => { setActiveTab(item.label); }}
+                      className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition-all text-sm font-bold ${activeTab === item.label ? 'bg-zinc-900 text-indigo-400 border border-zinc-800 shadow-inner' : 'text-zinc-500 hover:text-white hover:bg-zinc-900/50'}`}
                     >
-                      {item}
+                      {item.icon}
+                      {item.label}
                     </button>
                   ))}
                 </div>
               </div>
+              
               <div className="pt-8 border-t border-zinc-900 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <img src={user?.avatar} className="w-10 h-10 rounded-full border border-zinc-800" alt="Avatar" />
-                  <div>
-                    <p className="text-xs font-black text-white">{user?.name}</p>
-                    <p className="text-[10px] font-bold text-zinc-500 uppercase">{user?.branch} Node</p>
+                <div className="flex items-center gap-3 min-w-0">
+                  <img src={user?.avatar} className="w-10 h-10 rounded-full border border-zinc-800 shrink-0" alt="" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-black text-white truncate">{user?.name}</p>
+                    <p className="text-[10px] font-bold text-zinc-500 uppercase truncate">{user?.branch} Dept</p>
                   </div>
                 </div>
-                <button onClick={() => setView('landing')} className="p-2 text-zinc-600 hover:text-rose-500 transition-colors"><LogOut size={18}/></button>
+                <button type="button" onClick={() => setView('auth')} className="p-2 text-zinc-600 hover:text-rose-500 transition-colors shrink-0"><LogOut size={18}/></button>
               </div>
             </nav>
 
             <main className="flex-1 p-6 md:p-12 overflow-y-auto max-w-7xl mx-auto w-full">
+              
               <header className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
                 <div>
-                  <h2 className="text-3xl font-black tracking-tight text-white mb-1">Ecosystem Status</h2>
+                  <h2 className="text-3xl font-black tracking-tight text-white mb-1">{search ? 'Search Results Matrix' : activeTab}</h2>
                   <div className="text-sm text-zinc-500 font-medium tracking-wide flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                    <span>Node operational across institutional network.</span>
+                    <span>NIET Verified Identity Sandbox Framework Active.</span>
                   </div>
                 </div>
+                
                 <div className="relative group">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-indigo-500 transition-colors" size={18}/>
                   <input 
                     type="text" 
-                    placeholder="Query skills, branches, or names..." 
-                    className="w-full md:w-80 h-12 pl-12 pr-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl focus:border-indigo-500 outline-none transition-all text-sm font-medium"
+                    placeholder="Query skills, name, branch or credentials..." 
+                    className="w-full md:w-85 h-12 pl-12 pr-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl focus:border-indigo-500 outline-none transition-all text-sm font-medium uppercase tracking-wide placeholder:normal-case text-indigo-400 font-mono"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </header>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <div className="lg:col-span-2 space-y-10">
-                  <section className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-black tracking-tight flex items-center gap-2 uppercase"><Trophy size={18} className="text-yellow-500"/> Verified Contributors</h3>
-                      <button className="text-[10px] font-black uppercase tracking-widest text-zinc-600 hover:text-indigo-400 transition-colors">Scan All Nodes</button>
+              <div className="h-full">
+                
+                {search.trim() !== '' ? (
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
+                      <p className="text-xs font-bold text-zinc-500 tracking-wider uppercase">Query Outputs: {reactiveSearchMatrix.length} Matched Profiles Ranked By Collaboration Volume</p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {MOCK_USERS.map(u => (
-                        <motion.div 
-                          whileHover={{ y: -5 }}
-                          key={u.id} 
-                          className="p-6 rounded-3xl bg-zinc-900/30 border border-zinc-900 hover:border-zinc-800 transition-all cursor-pointer group"
-                        >
-                          <div className="flex items-center justify-between mb-6">
-                            <img src={u.avatar} className="w-12 h-12 rounded-2xl bg-zinc-950 border border-zinc-800 p-1" alt="avatar" />
-                            <div className="px-3 py-1 bg-black rounded-xl border border-zinc-900 text-[10px] font-black text-indigo-400 flex items-center gap-1.5 shadow-inner">
-                              <Star size={10} className="fill-indigo-400"/> {u.rating}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {reactiveSearchMatrix.map(u => (
+                        <div key={u.id} className="p-6 rounded-3xl bg-zinc-900/40 border border-indigo-500/10 hover:border-indigo-500/30 transition-all flex flex-col justify-between h-60 shadow-xl">
+                          <div>
+                            <div className="flex items-start justify-between mb-4 gap-2">
+                              <div className="flex items-center gap-3 min-w-0">
+                                <img src={u.avatar} className="w-11 h-11 rounded-xl bg-zinc-950 border border-zinc-800 p-1 shrink-0" alt="" />
+                                <div className="min-w-0">
+                                  <h4 className="font-black text-sm text-white truncate">{u.name}</h4>
+                                  <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wide truncate">{u.branch} • Year {u.year}</p>
+                                </div>
+                              </div>
+                              <div className="px-2.5 py-1 bg-black rounded-xl border border-zinc-800 text-[10px] font-black text-yellow-500 flex items-center gap-1 shadow-inner shrink-0 whitespace-nowrap">
+                                <Star size={10} className="fill-yellow-500 text-yellow-500"/> {u.collabs} Stars
+                              </div>
                             </div>
+                            <p className="text-xs text-zinc-400 font-normal leading-relaxed line-clamp-3">{u.bio}</p>
                           </div>
-                          <div className="mb-4">
-                            <h4 className="font-black text-lg text-white group-hover:text-indigo-400 transition-colors">{u.name}</h4>
-                            <p className="text-xs text-zinc-500 font-bold tracking-wide uppercase">{u.branch} Department • Year {u.year}</p>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-900/60">
                             {u.skills.map(sk => (
-                              <span key={sk.name} className="text-[9px] font-black uppercase px-2.5 py-1 rounded-md bg-zinc-950 border border-zinc-900 text-zinc-500 group-hover:text-zinc-300 transition-colors">{sk.name}</span>
+                              <span key={sk.name} className={`text-[9px] font-black uppercase px-2 py-0.5 rounded border ${search.toLowerCase() === sk.name.toLowerCase() ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 animate-pulse' : 'bg-zinc-950 text-zinc-500 border-zinc-900'}`}>{sk.name}</span>
                             ))}
                           </div>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
-                  </section>
-
-                  <section className="p-8 rounded-3xl bg-zinc-900/20 border border-zinc-900 backdrop-blur-md">
-                    <h3 className="text-lg font-black tracking-tight mb-8 flex items-center gap-2 uppercase"><TrendingUp size={18} className="text-indigo-500"/> Skill Saturation Graph</h3>
-                    <div className="h-64 w-full">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={[{n:'Jan', v:400},{n:'Feb', v:700},{n:'Mar', v:500},{n:'Apr', v:900},{n:'May', v:1200}]} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                          <defs>
-                            <linearGradient id="colorV" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                              <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                            </linearGradient>
-                          </defs>
-                          <XAxis dataKey="n" stroke="#27272a" fontSize={10} tickLine={false} axisLine={false} />
-                          <Tooltip contentStyle={{background:'#09090b', borderColor:'#18181b', borderRadius:'12px'}} />
-                          <Area type="monotone" dataKey="v" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorV)" />
-                        </AreaChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </section>
-                </div>
-
-                <div className="space-y-8">
-                   <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-950/30 to-transparent border border-indigo-500/20 text-center shadow-2xl shadow-indigo-500/5">
-                      <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-indigo-400">
-                        <Sparkles size={24} />
-                      </div>
-                      <h4 className="text-xl font-black text-white mb-3 tracking-tight">Deploy Squad Opening</h4>
-                      <p className="text-xs text-zinc-500 font-medium leading-relaxed mb-8">Initialize a team formation request for hackathons or research project nodes instantly.</p>
-                      <button className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all shadow-lg shadow-indigo-600/10">Initialize Requirement</button>
-                   </div>
-
-                   <div className="p-8 rounded-3xl bg-zinc-900/30 border border-zinc-900 space-y-6">
-                      <h4 className="text-xs font-black uppercase tracking-widest text-zinc-500">Node Alerts</h4>
-                      <div className="space-y-4">
-                        <div className="flex gap-3 p-3 rounded-xl bg-black border border-zinc-900">
-                          <div className="w-2 h-2 rounded-full bg-indigo-500 shrink-0 mt-1.5 animate-pulse" />
-                          <p className="text-[10px] text-zinc-400 font-medium leading-relaxed">System identified 4 new <span className="text-white font-bold">React</span> specialists in CSE department.</p>
+                    {reactiveSearchMatrix.length === 0 && (
+                      <div className="text-center p-12 rounded-xl border border-dashed border-zinc-900 text-zinc-600 text-sm font-medium">No profile data streams found matching active queries.</div>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    {activeTab === 'Dashboard' && (
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                        <div className="lg:col-span-2 space-y-10">
+                          <section className="space-y-6">
+                            <div className="flex items-center justify-between">
+                              <h3 className="text-lg font-black tracking-tight flex items-center gap-2 uppercase text-zinc-400"><Award size={18} className="text-indigo-400"/> Top Network Contributors (Collab Count Ranked)</h3>
+                              <button type="button" onClick={() => setActiveTab('Network Explore')} className="text-[10px] font-black uppercase tracking-widest text-zinc-600 hover:text-indigo-400 transition-colors">See Entire Mesh Network ({networkUsers.length})</button>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {reactiveSearchMatrix.slice(0, 4).map(u => (
+                                <div key={u.id} className="p-6 rounded-3xl bg-zinc-900/30 border border-zinc-900 hover:border-zinc-800 transition-all group flex flex-col justify-between h-56 shadow-md">
+                                  <div>
+                                    <div className="flex items-center justify-between mb-4 gap-2">
+                                      <img src={u.avatar} className="w-12 h-12 rounded-2xl bg-zinc-950 border border-zinc-800 p-1 shrink-0" alt="" />
+                                      <div className="px-2.5 py-1 bg-black rounded-xl border border-zinc-800 text-[10px] font-black text-yellow-500 flex items-center gap-1 shadow-inner shrink-0 whitespace-nowrap">
+                                        <Star size={10} className="fill-yellow-500 text-yellow-500"/> {u.collabs} Stars
+                                      </div>
+                                    </div>
+                                    <h4 className="font-black text-base text-white group-hover:text-indigo-400 transition-colors truncate">{u.name}</h4>
+                                    <p className="text-xs text-zinc-500 font-bold tracking-wide uppercase mt-0.5">{u.branch} Dept • Year {u.year}</p>
+                                    <p className="text-xs text-zinc-400 mt-2 line-clamp-2 font-normal leading-relaxed">{u.bio}</p>
+                                  </div>
+                                  <div className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-900/60 mt-2">
+                                    {u.skills.map(sk => (
+                                      <span key={sk.name} className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-zinc-950 border border-zinc-800 text-zinc-400">{sk.name}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </section>
+                          
+                          <section className="p-8 rounded-3xl bg-zinc-900/20 border border-zinc-900 backdrop-blur-md">
+                            <h3 className="text-base font-black tracking-tight mb-8 flex items-center gap-2 uppercase text-zinc-400"><TrendingUp size={18} className="text-indigo-500"/> Operational Node Execution Logs</h3>
+                            <div className="h-64 w-full">
+                              <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={[{n:'Jan', v:400},{n:'Feb', v:720},{n:'Mar', v:610},{n:'Apr', v:940},{n:'May', v:1350}]} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                                  <XAxis dataKey="n" stroke="#27272a" fontSize={10} tickLine={false} />
+                                  <Tooltip contentStyle={{background:'#09090b', borderColor:'#18181b', borderRadius:'12px'}} />
+                                  <Area type="monotone" dataKey="v" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="#6366f1" />
+                                </AreaChart>
+                              </ResponsiveContainer>
+                            </div>
+                          </section>
                         </div>
-                        <div className="flex gap-3 p-3 rounded-xl bg-black border border-zinc-900">
-                          <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0 mt-1.5" />
-                          <p className="text-[10px] text-zinc-400 font-medium leading-relaxed">Upcoming <span className="text-white font-bold">HackNIET</span> project phase starts in 48 hours.</p>
+                        <div className="space-y-8">
+                          <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-950/30 to-transparent border border-indigo-500/20 text-center shadow-2xl">
+                            <Sparkles className="mx-auto mb-4 text-indigo-400" size={28} />
+                            <h4 className="text-lg font-black text-white mb-2 tracking-tight">Need a Squad Node?</h4>
+                            <p className="text-xs text-zinc-500 font-medium mb-6">Broadcast stack specifications instantly onto the network stream.</p>
+                            <button type="button" onClick={() => setActiveTab('Squad Board')} className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl text-xs uppercase tracking-wider">Open Squad Post</button>
+                          </div>
                         </div>
                       </div>
-                   </div>
-                </div>
+                    )}
+
+                    {activeTab === 'Network Explore' && (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
+                          <p className="text-xs font-bold text-zinc-500 tracking-wider uppercase">Active Network Directory Matrix ({reactiveSearchMatrix.length} Verified Nodes)</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {reactiveSearchMatrix.map(u => (
+                            <div key={u.id} className="p-6 rounded-3xl bg-zinc-900/20 border border-zinc-900 hover:border-zinc-800 transition-all flex flex-col justify-between h-60 shadow-md">
+                              <div>
+                                <div className="flex items-start justify-between mb-4 gap-2">
+                                  <div className="flex items-center gap-3 min-w-0">
+                                    <img src={u.avatar} className="w-11 h-11 rounded-xl bg-zinc-950 border border-zinc-800 p-1 shrink-0" alt="" />
+                                    <div className="min-w-0">
+                                      <h4 className="font-black text-sm text-white truncate">{u.name}</h4>
+                                      <p className="text-[10px] text-zinc-500 font-bold uppercase truncate">{u.branch} • Yr {u.year}</p>
+                                    </div>
+                                  </div>
+                                  <div className="px-2.5 py-1 bg-black rounded-xl border border-zinc-800 text-[10px] font-black text-yellow-500 flex items-center gap-1 shadow-inner shrink-0 whitespace-nowrap">
+                                    <Star size={10} className="fill-yellow-500 text-yellow-500"/> {u.collabs} Stars
+                                  </div>
+                                </div>
+                                <p className="text-xs text-zinc-400 font-normal leading-relaxed line-clamp-3">{u.bio}</p>
+                              </div>
+                              <div className="flex flex-wrap gap-1.5 pt-4 border-t border-zinc-900/60">
+                                {u.skills.map(sk => (
+                                  <span key={sk.name} className="text-[9px] font-black uppercase px-2.5 py-0.5 rounded bg-zinc-950 border border-zinc-800 text-zinc-400">{sk.name}</span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeTab === 'Squad Board' && (
+                      <div className="max-w-3xl mx-auto space-y-6">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Active System Pipeline Formations</p>
+                          <button type="button" onClick={() => setModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-white text-black font-black text-xs rounded-xl shadow-md"><PlusCircle size={14}/> Create Post</button>
+                        </div>
+                        <div className="space-y-4">
+                          {collabPosts.map(post => (
+                            <div key={post.id} className="p-6 rounded-3xl bg-zinc-900/30 border border-zinc-900 space-y-4">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-black text-zinc-300">{post.creatorName}</span>
+                                <span className="text-[9px] font-black tracking-widest uppercase bg-indigo-500/10 px-2.5 py-1 border border-indigo-500/20 rounded-md text-indigo-400">{post.tag}</span>
+                              </div>
+                              <div>
+                                <h4 className="text-base font-black text-white tracking-tight mb-1">{post.title}</h4>
+                                <p className="text-xs text-zinc-400 leading-relaxed font-normal">{post.desc}</p>
+                              </div>
+                              <div className="flex flex-wrap gap-1.5">
+                                {post.skills.map(sk => (
+                                  <span key={sk} className="text-[9px] font-black uppercase px-2 py-0.5 bg-black rounded border border-zinc-800 text-zinc-500">{sk}</span>
+                                ))}
+                              </div>
+                              <div className="pt-4 border-t border-zinc-900/60 flex items-center justify-between">
+                                <button type="button" onClick={() => {
+                                  setCollabPosts(prev => prev.map(p => p.id === post.id ? { ...p, likes: p.likes + 1 } : p));
+                                }} className="flex items-center gap-1.5 text-xs font-bold text-zinc-500 hover:text-zinc-300"><ThumbsUp size={12}/> {post.likes} Upvotes</button>
+                                <button 
+                                  type="button"
+                                  onClick={() => {
+                                    setCollabPosts(prev => prev.map(p => p.id === post.id ? { ...p, applied: true } : p));
+                                  }}
+                                  className={`px-4 py-1.5 rounded-xl text-xs font-black border transition-all ${post.applied ? 'bg-zinc-950 border-zinc-950 text-emerald-500' : 'bg-zinc-900 border-zinc-800 text-zinc-200 hover:border-zinc-700'}`}
+                                >
+                                  {post.applied ? 'Linked' : 'Apply Node'}
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        {modalOpen && (
+                          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                            <div className="w-full max-w-md p-6 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
+                              <h3 className="text-base font-black text-white">New Broadcast Requirement</h3>
+                              <div className="space-y-3">
+                                <input type="text" placeholder="Project name..." className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs outline-none text-white" value={newPost.title} onChange={e => setNewPost({...newPost, title: e.target.value})} />
+                                <textarea placeholder="Describe details..." rows={3} className="w-full p-4 bg-black border border-zinc-800 rounded-xl text-xs outline-none text-white resize-none" value={newPost.desc} onChange={e => setNewPost({...newPost, desc: e.target.value})} />
+                                <input type="text" placeholder="Skills (comma separated: Painting, C++)..." className="w-full h-11 px-4 bg-black border border-zinc-800 rounded-xl text-xs outline-none text-white" value={newPost.skills} onChange={e => setNewPost({...newPost, skills: e.target.value})} />
+                                <button type="button" onClick={() => {
+                                  if(!newPost.title || !newPost.desc) return;
+                                  setCollabPosts([{ id: `p_${Date.now()}`, title: newPost.title, creatorName: user?.name || 'Aniket Chaudhary', avatar: user?.avatar || '', tag: newPost.tag, desc: newPost.desc, skills: newPost.skills.split(',').map(s=>s.trim()).filter(Boolean), likes: 1, applied: false }, ...collabPosts]);
+                                  setModalOpen(false);
+                                  setNewPost({ title: '', desc: '', tag: 'Project', skills: '' });
+                                }} className="w-full h-11 bg-white text-black font-black rounded-xl text-xs uppercase">Deploy Payload</button>
+                                <button type="button" onClick={() => setModalOpen(false)} className="w-full py-2 text-zinc-500 text-xs font-bold hover:text-white">Dismiss</button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {activeTab === 'Peer Chat' && (
+                      <div className="h-[calc(100vh-240px)] border border-zinc-900 rounded-3xl overflow-hidden bg-zinc-950/20 backdrop-blur-md flex">
+                        <div className="w-80 border-r border-zinc-900 flex flex-col bg-zinc-950/40">
+                          {chatChannels.map((ch, idx) => (
+                            <div key={idx} onClick={() => setActiveChatIdx(idx)} className={`p-4 flex items-center gap-3 cursor-pointer transition-colors ${idx === activeChatIdx ? 'bg-zinc-900' : 'hover:bg-zinc-900/30'}`}>
+                              <img src={ch.avatar} className="w-9 h-9 rounded-full bg-zinc-800" alt="" />
+                              <div className="min-w-0">
+                                <p className="text-xs font-black text-white truncate">{ch.name}</p>
+                                <p className="text-[10px] text-zinc-500 truncate font-normal">{ch.msgs[ch.msgs.length - 1]?.t}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex-1 flex flex-col justify-between bg-black/10">
+                          <div className="p-4 bg-zinc-950/40 border-b border-zinc-900 text-xs font-black text-zinc-300 uppercase flex items-center gap-2">
+                             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Channel Session: {chatChannels[activeChatIdx].name}
+                          </div>
+                          <div className="flex-1 p-6 overflow-y-auto space-y-4">
+                            {chatChannels[activeChatIdx].msgs.map((m, i) => (
+                              <div key={i} className={`flex ${m.s === 'you' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-xs p-3.5 rounded-2xl text-xs font-medium ${m.s === 'you' ? 'bg-zinc-900 text-white border border-zinc-800 rounded-br-none' : 'bg-black border border-zinc-900 text-zinc-300 rounded-bl-none'}`}>
+                                  {m.t}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <form onSubmit={e => {
+                            e.preventDefault();
+                            if(!chatInput.trim()) return;
+                            const copy = [...chatChannels];
+                            copy[activeChatIdx].msgs.push({ s: 'you', t: chatInput.trim() });
+                            setChatChannels(copy);
+                            setChatInput('');
+                            setTimeout(() => {
+                              copy[activeChatIdx].msgs.push({ s: 'them', t: 'Institutional pipeline acknowledgement bit received.' });
+                              setChatChannels([...copy]);
+                            }, 1000);
+                          }} className="p-4 border-t border-zinc-900 flex gap-3 bg-zinc-950/40">
+                            <input type="text" placeholder="Type data stream payload text blocks..." className="flex-1 bg-black border border-zinc-800 h-11 px-4 rounded-xl text-xs text-white outline-none" value={chatInput} onChange={e=>setChatInput(e.target.value)} />
+                            <button type="submit" className="w-11 h-11 bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center text-white"><Send size={14}/></button>
+                          </form>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeTab === 'Leaderboard' && (
+                      <div className="max-w-2xl mx-auto space-y-4">
+                        <div className="p-4 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl text-xs font-bold text-zinc-400 flex items-center gap-3">
+                          <ShieldCheck className="text-indigo-400" size={16}/> 
+                          <span>Rank metrics calculated utilizing aggregated reputation XP scores loop parameters.</span>
+                        </div>
+                        <div className="border border-zinc-900 rounded-2xl overflow-hidden bg-zinc-950/20">
+                          {networkRankedLeaderboard.map((u, i) => (
+                            <div key={u.id} className="p-4 flex items-center justify-between border-b border-zinc-900/60 last:border-b-0 hover:bg-zinc-900/20 transition-all">
+                              <div className="flex items-center gap-4 min-w-0">
+                                <span className={`w-6 h-6 rounded font-mono text-xs font-black flex items-center justify-center ${i === 0 ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-zinc-950 text-zinc-500 border border-zinc-900'}`}>{i + 1}</span>
+                                <img src={u.avatar} className="w-9 h-9 rounded-full bg-zinc-800" alt="" />
+                                <div className="min-w-0">
+                                  <h4 className="text-xs font-black text-white truncate">{u.name}</h4>
+                                  <p className="text-[10px] text-zinc-500 font-bold uppercase truncate">{u.branch} • Yr {u.year}</p>
+                                </div>
+                              </div>
+                              <span className="font-mono text-xs font-black text-indigo-400 bg-indigo-500/5 px-2.5 py-1 rounded-md border border-indigo-500/10 shrink-0">{u.reputation} XP</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  </>
+                )}
+
               </div>
             </main>
-          </motion.div>
+          </div>
         )}
+
       </AnimatePresence>
     </div>
   );
